@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Международное право — Особенная часть</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0e1a;--surface:#111827;--card:#1a2038;--border:#2a3050;
+  --text:#e2e8f0;--muted:#8892a8;--accent:#6c8cff;--gold:#e8b84b;
+  --glow:rgba(108,140,255,.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,rgba(108,140,255,.08) 0%,transparent 50%),radial-gradient(circle at 70% 60%,rgba(232,184,75,.05) 0%,transparent 50%);animation:drift 20s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(-3%,2%)}}
+.hero-label{font-size:.75rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-weight:600;opacity:0;animation:fadeUp .8s .2s forwards}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,6vw,4.5rem);font-weight:700;line-height:1.15;margin-bottom:1rem;opacity:0;animation:fadeUp .8s .4s forwards}
+.hero h1 span{color:var(--accent)}
+.hero p{font-size:1.1rem;color:var(--muted);max-width:600px;margin-bottom:2.5rem;opacity:0;animation:fadeUp .8s .6s forwards}
+.hero-stats{display:flex;gap:3rem;opacity:0;animation:fadeUp .8s .8s forwards}
+.hero-stat{text-align:center}
+.hero-stat .num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--gold)}
+.hero-stat .label{font-size:.75rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:-.2rem}
+.scroll-hint{position:absolute;bottom:2rem;opacity:0;animation:fadeUp .8s 1.2s forwards}
+.scroll-hint span{display:block;width:1.5px;height:40px;background:linear-gradient(to bottom,var(--accent),transparent);margin:0 auto;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3;transform:scaleY(.7)}50%{opacity:1;transform:scaleY(1)}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}from{opacity:0;transform:translateY(20px)}}
+
+/* ===== NAV ===== */
+.topics-nav{position:sticky;top:0;z-index:100;background:rgba(10,14,26,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:.6rem 1rem;display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none}
+.topics-nav::-webkit-scrollbar{display:none}
+.nav-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:.4rem .9rem;border-radius:99px;font-size:.78rem;font-family:'Outfit',sans-serif;cursor:pointer;white-space:nowrap;transition:all .25s}
+.nav-btn:hover,.nav-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.nav-btn .num{font-weight:700;margin-right:.3rem;color:var(--gold)}
+.nav-btn.active .num{color:#fff}
+
+/* ===== TOPICS GRID ===== */
+.topics{max-width:1200px;margin:0 auto;padding:3rem 1.5rem 6rem}
+.topics h2{font-family:'Cormorant Garamond',serif;font-size:2rem;margin-bottom:2rem;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .3s;position:relative}
+.card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:0 8px 30px var(--glow)}
+.card-thumb{aspect-ratio:16/9;overflow:hidden;position:relative}
+.card-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.card:hover .card-thumb img{transform:scale(1.03)}
+.card-body{padding:1rem 1.2rem}
+.card-num{font-size:.7rem;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-top:.2rem}
+.card-meta{font-size:.78rem;color:var(--muted);margin-top:.4rem;display:flex;align-items:center;gap:.5rem}
+.card-meta svg{width:14px;height:14px;opacity:.5}
+.badge{display:inline-block;font-size:.65rem;padding:.15rem .5rem;border-radius:99px;background:rgba(108,140,255,.15);color:var(--accent);font-weight:500}
+
+/* ===== VIEWER (modal) ===== */
+.viewer-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(5,7,15,.97);flex-direction:column}
+.viewer-overlay.open{display:flex}
+.viewer-header{display:flex;justify-content:space-between;align-items:center;padding:.8rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.viewer-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700}
+.viewer-title .tn{color:var(--gold);margin-right:.5rem}
+.viewer-actions{display:flex;gap:.6rem;align-items:center}
+.viewer-actions a,.viewer-actions button{background:var(--card);border:1px solid var(--border);color:var(--text);padding:.4rem 1rem;border-radius:8px;font-size:.8rem;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;gap:.4rem}
+.viewer-actions a:hover,.viewer-actions button:hover{border-color:var(--accent);color:var(--accent)}
+.close-btn{background:none!important;border:none!important;font-size:1.5rem;color:var(--muted);cursor:pointer;padding:.2rem .5rem!important}
+.close-btn:hover{color:#fff}
+
+.viewer-body{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:1rem}
+.viewer-body img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px;box-shadow:0 4px 40px rgba(0,0,0,.5);transition:opacity .25s}
+
+.viewer-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(26,32,56,.8);border:1px solid var(--border);color:var(--text);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:all .2s;backdrop-filter:blur(4px)}
+.viewer-nav:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.viewer-nav.prev{left:1rem}
+.viewer-nav.next{right:1rem}
+
+.viewer-footer{padding:.6rem 1.5rem;border-top:1px solid var(--border);text-align:center;flex-shrink:0}
+.viewer-counter{font-size:.85rem;color:var(--muted)}
+.viewer-counter b{color:var(--accent)}
+.viewer-dots{display:flex;gap:6px;justify-content:center;margin-top:.4rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:all .2s}
+.dot.active{background:var(--accent);transform:scale(1.3)}
+
+/* ===== DOWNLOAD SECTION ===== */
+.downloads{max-width:1200px;margin:0 auto;padding:0 1.5rem 6rem}
+.downloads h2{font-family:'Cormorant Garamond',serif;font-size:2rem;margin-bottom:.5rem;text-align:center}
+.downloads .sub{text-align:center;color:var(--muted);margin-bottom:2rem;font-size:.9rem}
+.dl-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;transition:all .3s}
+.dl-card:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(232,184,75,.08)}
+.dl-info h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem}
+.dl-info p{color:var(--muted);font-size:.85rem;margin-top:.2rem}
+.dl-btn{background:linear-gradient(135deg,var(--gold),#c9972e);color:#0a0e1a;padding:.6rem 1.5rem;border-radius:8px;font-weight:600;font-size:.85rem;text-decoration:none;transition:all .2s;white-space:nowrap}
+.dl-btn:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(232,184,75,.3)}
+
+/* ===== FOOTER ===== */
+footer{text-align:center;padding:3rem 1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .hero-stats{flex-direction:column;gap:1.5rem}
+  .grid{grid-template-columns:1fr}
+  .viewer-nav{width:36px;height:36px;font-size:1rem}
+  .dl-card{flex-direction:column;gap:1rem;text-align:center}
+}
+
+/* Keyboard hints */
+.kbd{display:inline-block;padding:.1rem .4rem;border:1px solid var(--border);border-radius:4px;font-size:.7rem;color:var(--muted);margin-left:.3rem;font-family:monospace}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Международное публичное право</div>
+  <h1>Особенная часть:<br><span>10 отраслей</span></h1>
+  <p>Интерактивные презентации по ключевым отраслям международного права. Просматривайте слайды онлайн или скачивайте файлы.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">10</div><div class="label">Тем</div></div>
+    <div class="hero-stat"><div class="num">80</div><div class="label">Слайдов</div></div>
+    <div class="hero-stat"><div class="num">.pptx</div><div class="label">Скачать</div></div>
+  </div>
+  <div class="scroll-hint"><span></span></div>
+</section>
+
+<!-- STICKY NAV -->
+<nav class="topics-nav" id="topicsNav"></nav>
+
+<!-- TOPICS GRID -->
+<section class="topics" id="topics">
+  <h2>Выберите тему</h2>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- DOWNLOADS -->
+<section class="downloads" id="downloads">
+  <h2>Скачать материалы</h2>
+  <p class="sub">Все презентации в формате .pptx + конспект .docx</p>
+  <div id="dlList"></div>
+</section>
+
+<footer>Международное право — Особенная часть</footer>
+
+<!-- VIEWER MODAL -->
+<div class="viewer-overlay" id="viewer">
+  <div class="viewer-header">
+    <div class="viewer-title" id="viewerTitle"></div>
+    <div class="viewer-actions">
+      <a id="viewerDl" href="#" download>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        .pptx
+      </a>
+      <button class="close-btn" onclick="closeViewer()">&times;</button>
+    </div>
+  </div>
+  <div class="viewer-body" id="viewerBody">
+    <button class="viewer-nav prev" onclick="prevSlide()">&#8249;</button>
+    <img id="viewerImg" src="" alt="slide">
+    <button class="viewer-nav next" onclick="nextSlide()">&#8250;</button>
+  </div>
+  <div class="viewer-footer">
+    <div class="viewer-counter" id="viewerCounter"></div>
+    <div class="viewer-dots" id="viewerDots"></div>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  { id:"01", title:"Международное право прав человека", slides:11, file:"pres_01_prava_cheloveka.pptx", tags:["ВДПЧ","МПГПП","ЕСПЧ","R2P"] },
+  { id:"02", title:"Право международной безопасности", slides:10, file:"pres_02_bezopasnost.pptx", tags:["СБ ООН","ДНЯО","ОДКБ","ДОВСЕ"] },
+  { id:"03", title:"Международное экономическое право", slides:8, file:"pres_03_ekonom.pptx", tags:["ВТО","МВФ","МЦУИС","НБ"] },
+  { id:"04", title:"Международное морское право", slides:8, file:"pres_04_morskoe.pptx", tags:["ЮНКЛОС","ИЭЗ","ИТЛОС","12 миль"] },
+  { id:"05", title:"Территория в международном праве", slides:8, file:"pres_05_territoriya.pptx", tags:["Антарктика","Арктика","граница"] },
+  { id:"06", title:"Международное космическое право", slides:7, file:"pres_06_kosmos.pptx", tags:["Договор 1967","неприсвоение","МККП"] },
+  { id:"07", title:"Международное воздушное право", slides:7, file:"pres_07_vozdushnoe.pptx", tags:["Чикаго 1944","ИКАО","свободы"] },
+  { id:"08", title:"Международное уголовное право", slides:7, file:"pres_08_ugolovnoe.pptx", tags:["МУС","Нюрнберг","геноцид"] },
+  { id:"09", title:"Международное гуманитарное право", slides:7, file:"pres_09_gumanitarnoe.pptx", tags:["ЖК 1949","МККК","комбатанты"] },
+  { id:"10", title:"Международное экологическое право", slides:7, file:"pres_10_ekologicheskoe.pptx", tags:["Рио 1992","ЮНЕП","Париж 2015"] },
+];
+
+// Build nav
+const nav = document.getElementById('topicsNav');
+DATA.forEach(d => {
+  const b = document.createElement('button');
+  b.className = 'nav-btn';
+  b.innerHTML = `<span class="num">${d.id}</span>${d.title.split(' ').slice(-2).join(' ')}`;
+  b.onclick = () => openViewer(d.id);
+  nav.appendChild(b);
+});
+
+// Build grid
+const grid = document.getElementById('grid');
+DATA.forEach(d => {
+  const c = document.createElement('div');
+  c.className = 'card';
+  c.onclick = () => openViewer(d.id);
+  c.innerHTML = `
+    <div class="card-thumb"><img src="slides/topic${d.id}/s-1.jpg" alt="${d.title}" loading="lazy"></div>
+    <div class="card-body">
+      <div class="card-num">Тема ${d.id}</div>
+      <div class="card-title">${d.title}</div>
+      <div class="card-meta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        ${d.slides} слайдов
+        ${d.tags.map(t => `<span class="badge">${t}</span>`).slice(0,2).join('')}
+      </div>
+    </div>`;
+  grid.appendChild(c);
+});
+
+// Build downloads
+const dlList = document.getElementById('dlList');
+// Konspekt
+dlList.innerHTML = `<div class="dl-card">
+  <div class="dl-info"><h3>📄 Конспект по всем 10 темам</h3><p>Подробный конспект .docx — определения, принципы, источники, таблицы</p></div>
+  <a class="dl-btn" href="pptx/konspekt_mp.docx" download>Скачать .docx</a>
+</div>`;
+DATA.forEach(d => {
+  dlList.innerHTML += `<div class="dl-card">
+    <div class="dl-info"><h3>Тема ${d.id}. ${d.title}</h3><p>${d.slides} слайдов • ${d.tags.join(' • ')}</p></div>
+    <a class="dl-btn" href="pptx/${d.file}" download>Скачать .pptx</a>
+  </div>`;
+});
+
+// Viewer
+let currentTopic = null, currentSlide = 1, totalSlides = 0;
+
+function openViewer(id) {
+  const d = DATA.find(x => x.id === id);
+  if (!d) return;
+  currentTopic = d; currentSlide = 1; totalSlides = d.slides;
+  document.getElementById('viewerTitle').innerHTML = `<span class="tn">Тема ${d.id}</span>${d.title}`;
+  document.getElementById('viewerDl').href = `pptx/${d.file}`;
+  buildDots();
+  showSlide();
+  document.getElementById('viewer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // highlight nav
+  document.querySelectorAll('.nav-btn').forEach((b,i) => b.classList.toggle('active', DATA[i].id === id));
+}
+
+function closeViewer() {
+  document.getElementById('viewer').classList.remove('open');
+  document.body.style.overflow = '';
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+}
+
+function showSlide() {
+  const img = document.getElementById('viewerImg');
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = `slides/topic${currentTopic.id}/s-${currentSlide}.jpg`;
+    img.onload = () => { img.style.opacity = '1'; };
+  }, 100);
+  document.getElementById('viewerCounter').innerHTML = `Слайд <b>${currentSlide}</b> из <b>${totalSlides}</b> <span class="kbd">←→</span>`;
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i === currentSlide - 1));
+}
+
+function nextSlide() { if (currentSlide < totalSlides) { currentSlide++; showSlide(); } }
+function prevSlide() { if (currentSlide > 1) { currentSlide--; showSlide(); } }
+
+function buildDots() {
+  const c = document.getElementById('viewerDots');
+  c.innerHTML = '';
+  for (let i = 1; i <= totalSlides; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 1 ? ' active' : '');
+    d.onclick = () => { currentSlide = i; showSlide(); };
+    c.appendChild(d);
+  }
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('viewer').classList.contains('open')) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  if (e.key === 'Escape') closeViewer();
+});
+
+// Swipe support
+let touchStartX = 0;
+document.getElementById('viewerBody').addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.getElementById('viewerBody').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) { dx > 0 ? prevSlide() : nextSlide(); }
+});
+</script>
+</body>
+</html>
